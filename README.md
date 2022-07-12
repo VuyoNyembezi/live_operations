@@ -1,6 +1,6 @@
 # LiveOperations
 
-This applicatins allows Live Update of Football Log when stats are changing
+This applicatin allows Live Update of Football Log when stats are changing
 
 To start your Phoenix server:
 
