@@ -20,9 +20,9 @@ defmodule LiveOperationsWeb.Router do
   scope "/", LiveOperationsWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/menu", PageController, :index
 
-    live "/football", FootballLive.Index, :index
+    live "/", FootballLive.Index, :index
     live "/football/new", FootballLive.Index, :new
     live "/football/:id/edit", FootballLive.Index, :edit
 
