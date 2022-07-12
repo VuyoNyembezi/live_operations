@@ -1,0 +1,47 @@
+<div>
+  <h2><%= @title %></h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="football-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+
+    <%= label f, :badge %>
+<div phx-drop-target={@uploads.image.ref}>
+<%= live_file_input @uploads.image %>
+
+</div>
+<%= hidden_input f, :badge %>
+<%= error_tag f, :badge %>
+  
+   
+  
+  
+    <%= label f, :name %>
+    <%= text_input f, :name %>
+    <%= error_tag f, :name %>
+  
+    <%= label f, :win %>
+    <%= number_input f, :win %>
+    <%= error_tag f, :win %>
+  
+    <%= label f, :draw %>
+    <%= number_input f, :draw %>
+    <%= error_tag f, :draw %>
+  
+    <%= label f, :loss %>
+    <%= number_input f, :loss %>
+    <%= error_tag f, :loss %>
+  
+    <%= label f, :points %>
+    <%= number_input f, :points %>
+    <%= error_tag f, :points %>
+  
+    <div>
+      <%= submit "Save", phx_disable_with: "Saving..." %>
+    </div>
+  </.form>
+</div>

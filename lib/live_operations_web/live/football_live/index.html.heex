@@ -1,0 +1,53 @@
+<h1>Demo Football Log</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.football_index_path(@socket, :index)}>
+    <.live_component
+      module={LiveOperationsWeb.FootballLive.FormComponent}
+      id={@football.id || :new}
+      title={@page_title}
+      action={@live_action}
+      football={@football}
+      return_to={Routes.football_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Badge</th>
+      <th>Name</th>
+      <th>Win</th>
+      <th>Draw</th>
+      <th>Loss</th>
+      <th>Points</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="football">
+    <%= for football <- @football_collection do %>
+      <tr id={"football-#{football.id}"}>
+        <td> 
+          <article class="column">
+            <img alt="team badge" width="40" height="40" src={football.badge}>
+          </article>
+        </td>
+        <td><%= football.name %></td>
+        <td><%= football.win %></td>
+        <td><%= football.draw %></td>
+        <td><%= football.loss %></td>
+        <td><%= football.points %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.football_show_path(@socket, :show, football) %></span>
+          <span><%= live_patch "Edit", to: Routes.football_index_path(@socket, :edit, football) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: football.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "Add Team", to: Routes.football_index_path(@socket, :new) %></span>

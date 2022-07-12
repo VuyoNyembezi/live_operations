@@ -1,0 +1,51 @@
+<h1>Show Football</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.football_show_path(@socket, :show, @football)}>
+    <.live_component
+      module={LiveOperationsWeb.FootballLive.FormComponent}
+      id={@football.id}
+      title={@page_title}
+      action={@live_action}
+      football={@football}
+      return_to={Routes.football_show_path(@socket, :show, @football)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Badge:</strong>
+    <%= @football.badge %>
+  </li>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @football.name %>
+  </li>
+
+  <li>
+    <strong>Win:</strong>
+    <%= @football.win %>
+  </li>
+
+  <li>
+    <strong>Draw:</strong>
+    <%= @football.draw %>
+  </li>
+
+  <li>
+    <strong>Loss:</strong>
+    <%= @football.loss %>
+  </li>
+
+  <li>
+    <strong>Points:</strong>
+    <%= @football.points %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.football_show_path(@socket, :edit, @football), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.football_index_path(@socket, :index) %></span>
