@@ -8,6 +8,35 @@ defmodule LiveOperations.Sport do
 
   alias LiveOperations.Sport.Football
 
+
+  @topic inspect(__MODULE__)
+
+  def subscribe do
+    Phoenix.PubSub.subscribe(LiveOperations.PubSub, @topic)
+  end
+  def subscribe("update") do
+    Phoenix.PubSub.subscribe(LiveOperations.PubSub, @topic <> "update")
+  end
+
+  defp notify_subcribers({:ok, result}, event) do
+    Phoenix.PubSub.broadcast(LiveOperations.PubSub, @topic, {__MODULE__, event, result} )
+
+    Phoenix.PubSub.broadcast(
+      LiveOperations.PubSub,
+      @topic <> "update",
+      {__MODULE__, event, result}
+    )
+
+    {:ok, result}
+  end
+
+  defp notify_subcribers({:error, reason}, _), do: {:error, reason}
+
+
+
+
+
+
   @doc """
   Returns the list of football.
 
@@ -54,6 +83,7 @@ defmodule LiveOperations.Sport do
     %Football{}
     |> Football.changeset(attrs)
     |> Repo.insert()
+    |> notify_subcribers([:football, :created])
   end
 
   @doc """
@@ -72,6 +102,7 @@ defmodule LiveOperations.Sport do
     football
     |> Football.changeset(attrs)
     |> Repo.update()
+    |> notify_subcribers([:football, :updated])
   end
 
   @doc """
@@ -88,6 +119,7 @@ defmodule LiveOperations.Sport do
   """
   def delete_football(%Football{} = football) do
     Repo.delete(football)
+    |> notify_subcribers([:football, :deleted])
   end
 
   @doc """

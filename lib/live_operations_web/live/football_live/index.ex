@@ -6,7 +6,13 @@ defmodule LiveOperationsWeb.FootballLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
+    if connected?(socket), do: LiveOperations.Sport.subscribe()
     {:ok, assign(socket, :football_collection, list_football())}
+  end
+
+  defp fetch(socket) do
+    football_data = Sport.list_football()
+    assign(socket, football_collection: football_data)
   end
 
   @impl true
@@ -38,6 +44,11 @@ defmodule LiveOperationsWeb.FootballLive.Index do
     {:ok, _} = Sport.delete_football(football)
 
     {:noreply, assign(socket, :football_collection, list_football())}
+  end
+
+  @impl true
+  def handle_info({Sport, [:football, _], _}, socket) do
+    {:noreply, fetch(socket)}
   end
 
   defp list_football do

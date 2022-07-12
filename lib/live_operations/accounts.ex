@@ -1,4 +1,6 @@
-defmodule LiveOperations.Account do
+defmodule LiveOperations.Accounts do
+
+
   @moduledoc """
   The Account context.
   """
@@ -7,6 +9,32 @@ defmodule LiveOperations.Account do
   alias LiveOperations.Repo
 
   alias LiveOperations.Account.{User, UserToken, UserNotifier}
+
+
+  @topic inspect(__MODULE__)
+
+  def subscribe do
+    Phoenix.PubSub.subscribe(LiveOperations.PubSub, @topic)
+  end
+  def subscribe(user_id) do
+    Phoenix.PubSub.subscribe(LiveOperations.PubSub, @topic <> "#{user_id}")
+  end
+
+  defp notify_subcribers({:ok, result}, event) do
+    Phoenix.PubSub.broadcast(LiveOperations.PubSub, @topic, {__MODULE__, event, result} )
+
+    Phoenix.PubSub.broadcast(
+      LiveOperations.PubSub,
+      @topic <> "#{result.id}",
+      {__MODULE__, event, result}
+    )
+
+    {:ok, result}
+  end
+
+  defp notify_subcribers({:error, reason}, _), do: {:error, reason}
+
+
 
   ## Database getters
 
@@ -78,6 +106,7 @@ defmodule LiveOperations.Account do
     %User{}
     |> User.registration_changeset(attrs)
     |> Repo.insert()
+    |> notify_subcribers([:attrs, :created])
   end
 
   @doc """

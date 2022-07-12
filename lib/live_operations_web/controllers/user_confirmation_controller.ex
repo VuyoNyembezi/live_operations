@@ -1,15 +1,15 @@
 defmodule LiveOperationsWeb.UserConfirmationController do
   use LiveOperationsWeb, :controller
 
-  alias LiveOperations.Account
+  alias LiveOperations.Accounts
 
   def new(conn, _params) do
     render(conn, "new.html")
   end
 
   def create(conn, %{"user" => %{"email" => email}}) do
-    if user = Account.get_user_by_email(email) do
-      Account.deliver_user_confirmation_instructions(
+    if user = Accounts.get_user_by_email(email) do
+      Accounts.deliver_user_confirmation_instructions(
         user,
         &Routes.user_confirmation_url(conn, :edit, &1)
       )
@@ -31,7 +31,7 @@ defmodule LiveOperationsWeb.UserConfirmationController do
   # Do not log in the user after confirmation to avoid a
   # leaked token giving the user access to the account.
   def update(conn, %{"token" => token}) do
-    case Account.confirm_user(token) do
+    case Accounts.confirm_user(token) do
       {:ok, _} ->
         conn
         |> put_flash(:info, "User confirmed successfully.")
