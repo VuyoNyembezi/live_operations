@@ -1,4 +1,4 @@
-defmodule LiveOperations.Account do
+defmodule LiveOperations.Accounts do
   @moduledoc """
   The Account context.
   """
