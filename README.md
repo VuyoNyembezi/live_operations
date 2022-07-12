@@ -1,5 +1,7 @@
 # LiveOperations
 
+This applicatins allows Live Update of Football Log when stats are changing
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
