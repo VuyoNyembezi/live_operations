@@ -89,8 +89,6 @@ query = from(r in Event, where: r.active == false and r.result == true)
     |> Repo.preload([:home,:away])
   end
 
-
-
   @doc """
   Gets a single event.
 

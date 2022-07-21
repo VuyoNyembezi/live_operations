@@ -1,0 +1,53 @@
+<h1>Show Event</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.event_show_path(@socket, :show, @event)}>
+    <.live_component
+      module={LiveOperationsWeb.EventLive.FormComponent}
+      id={@event.id}
+      title={@page_title}
+      action={@live_action}
+      event={@event}
+      return_to={Routes.event_show_path(@socket, :show, @event)}
+    />
+  </.modal>
+<% end %>
+
+<div class="card" style="width: 50rem;">
+  <div class="card-body">
+    <h5 class="card-title">
+    <div class="row">
+    <div class="col">
+    <article >
+            <img alt="team badge" width="40" height="40" src={@event.home.badge}>
+          </article>
+          </div>
+    <div class="col text-end">
+          <%=  @event.home.name %>
+          <%= @event.home_score %>
+          </div>
+          -
+          <div class="col"> <%= @event.away_score %> <%=  @event.away.name %></div>
+          
+           <div class="col">
+    <article >
+            <img alt="team badge" width="40" height="40" src={@event.away.badge}>
+          </article>
+          </div></div></h5>
+    <h6 class="card-subtitle mb-2 text-muted">kickoff:  <%= @event.kickoff %> </h6>
+
+    
+    <p class="card-text">
+     <strong>Active:</strong>
+    <%= @event.active %>
+    </p>
+        <p class="card-text">
+    <strong>Result:</strong>
+    <%= @event.result %>
+    </p>
+    <span><%= live_patch "Edit", to: Routes.event_show_path(@socket, :edit, @event), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.event_index_path(@socket, :index) %></span>
+  </div>
+</div>
+
+

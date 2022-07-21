@@ -9,7 +9,6 @@ defmodule LiveOperations.Sport.Football do
     field :name, :string
     field :points, :integer
     field :win, :integer
-
     timestamps()
   end
 
@@ -25,4 +24,15 @@ defmodule LiveOperations.Sport.Football do
     |> unique_constraint(:name)
     |> unique_constraint(:badge)
   end
+
+  @doc false
+  def result_changeset(football, attrs) do
+    football
+    |> cast(attrs, [:badge, :name, :win, :draw, :loss, :points])
+    |> validate_number(:points, greater_than_or_equal_to: 0)
+    |> validate_number(:loss, greater_than_or_equal_to: 0)
+    |> validate_number(:win, greater_than_or_equal_to: 0)
+    |> validate_number(:draw, greater_than_or_equal_to: 0)
+  end
+
 end

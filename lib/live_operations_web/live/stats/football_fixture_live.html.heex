@@ -1,0 +1,71 @@
+<h1>Live Fixtures</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.event_index_path(@socket, :index)}>
+    <.live_component
+      module={LiveOperationsWeb.EventLive.FormComponent}
+      id={@event.id || :new}
+      title={@page_title}
+      action={@live_action}
+      event={@event}
+      return_to={Routes.event_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr><th>Home</th>
+      <th>Score</th>
+      
+       <th>Away</th>
+      <th>Kickoff</th>
+    </tr>
+  </thead>
+  <tbody id="fixtures">
+    <%= for event <- @live_fixtures do %>
+      <tr id={"event-#{event.id}"}>
+     <td>  <article >
+            <img alt="team badge" width="40" height="40" src={event.home.badge}>
+          </article><%= event.home.name %> </td>
+        <td><%= event.home_score %> - <%= event.away_score %></td>
+      <td><article >
+            <img alt="team badge" width="40" height="40" src={event.away.badge}>
+          </article><%= event.away.name %> </td>
+        <td>  <%= event.kickoff %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<h1>Upcoming Fixtures</h1>
+<table>
+  <thead>
+    <tr><th>Home</th>
+      <th>Score</th>
+      
+       <th>Away</th>
+      <th>Kickoff</th>
+    </tr>
+  </thead>
+  <tbody id="fixtures">
+    <%= for event <- @upcoming_fixtures do %>
+      <tr id={"event-#{event.id}"}>
+        <td > 
+          <article >
+            <img alt="team badge" width="40" height="40" src={event.home.badge}>
+          </article>
+    <span><%= event.home.name %></span> </td>
+        <td><%= event.home_score %> - <%= event.away_score %></td>
+        <td>
+        <article >
+            <img alt="team badge" width="40" height="40" src={event.away.badge}>
+          </article>
+        <%= event.away.name %> </td> 
+        <td><%= event.kickoff %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

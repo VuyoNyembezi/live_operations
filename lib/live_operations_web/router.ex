@@ -22,12 +22,37 @@ defmodule LiveOperationsWeb.Router do
 
     get "/menu", PageController, :index
 
-    live "/", FootballLive.Index, :index
-    live "/football/new", FootballLive.Index, :new
-    live "/football/:id/edit", FootballLive.Index, :edit
+    live "/", FootballStatsLive, :index
 
-    live "/football/:id", FootballLive.Show, :show
-    live "/football/:id/show/edit", FootballLive.Show, :edit
+    live "/fixture", FootballFixtureLive, :index
+
+    live "/results", FootballResultsLive, :index
+  end
+
+  scope "/", LiveOperationsWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    get "/menu", PageController, :index
+
+    live "/admin/football", FootballLive.Index, :index
+    live "/admin/football/new", FootballLive.Index, :new
+    live "/admin/football/:id/edit", FootballLive.Index, :edit
+
+    live "/admin/football/:id", FootballLive.Show, :show
+    live "/admin/football/:id/show/edit", FootballLive.Show, :edit
+
+    # Fixture
+    live "/admin/fixtures", EventLive.Index, :index
+    live "/admin/fixtures/new", EventLive.Index, :new
+    live "/admin/fixtures/:id/edit", EventLive.Index, :edit
+    live "/admin/fixtures/:id/result", EventLive.Index, :result
+    live "/admin/fixtures/:id", EventLive.Show, :show
+    live "/admin/fixtures/:id/show/edit", EventLive.Show, :edit
+
+
+    live "/admin/fixture/resulted", EventLive.Resulted, :index
+
+live "/admin/fixture/live", EventLive.Active, :index
   end
 
   # Other scopes may use custom stacks.

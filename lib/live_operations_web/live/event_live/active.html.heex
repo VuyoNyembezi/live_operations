@@ -1,0 +1,80 @@
+<nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href={Routes.event_index_path(@socket, :index)}>Fixtures</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href={Routes.event_active_path(@socket, :index)}>Active</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href={Routes.event_resulted_path(@socket, :index)}>Resulted</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<h1>Live Fixtures</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.event_active_path(@socket, :index)}>
+    <.live_component
+      module={LiveOperationsWeb.EventLive.FormComponent}
+      id={@event.id || :new}
+      title={@page_title}
+      action={@live_action}
+      event={@event}
+      return_to={Routes.event_active_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+    <th>Home team </th>
+      <th>Home score</th>
+       <th>Away score</th>
+      <th>Away team </th>
+      <th>Kickoff</th>
+      <th>Active</th>
+      <th>Result</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="fixtures">
+    <%= for event <- @active do %>
+      <tr id={"event-#{event.id}"}>
+        <td><article >
+            <img alt="team badge" width="40" height="40" src={event.home.badge}>
+          </article><%= event.home.name %></td>
+        <td><%= event.home_score %></td>
+          
+        <td><%= event.away_score %></td>
+        <td><article >
+            <img alt="team badge" width="40" height="40" src={event.away.badge}>
+          </article><%= event.away.name %></td>
+        <td><%= event.kickoff %></td>
+        <td><%= event.active %></td>
+        <td><%= event.result %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.event_show_path(@socket, :show, event) %></span>
+          <span><%= live_patch "Edit", to: Routes.event_index_path(@socket, :edit, event) %></span>
+             <span><%= live_patch "Result", to: Routes.event_index_path(@socket, :result, event) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: event.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Event", to: Routes.event_index_path(@socket, :new) %></span>
