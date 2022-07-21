@@ -1,0 +1,35 @@
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Badge</th>
+      <th>Name</th>
+      <th>Win</th>
+      <th>Draw</th>
+      <th>Loss</th>
+      <th>Points</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="football">
+    <%= for football <- @football_collection do %>
+      <tr id={"football-#{football.id}"}>
+        <td> 
+          <article class="column">
+            <img alt="team badge" width="40" height="40" src={football.badge}>
+          </article>
+        </td>
+        <td><%= football.name %></td>
+        <td><%= football.win %></td>
+        <td><%= football.draw %></td>
+        <td><%= football.loss %></td>
+        <td><%= football.points %></td>
+
+        
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

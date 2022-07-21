@@ -1,0 +1,28 @@
+<h1>Football Results</h1>
+
+<table>
+  <thead>
+    <tr><th>Home</th>
+      <th>Score</th>
+       <th>Away</th>
+     
+    </tr>
+  </thead>
+  <tbody id="fixtures">
+    <%= for event <- @results do %>
+      <tr id={"event-#{event.id}"}>
+     <td><article >
+            <img alt="team badge" width="40" height="40" src={event.home.badge}>
+          </article><%= event.home.name %> </td>
+        <td><%= event.home_score %> - <%= event.away_score %></td>
+        <td><article >
+            <img alt="team badge" width="40" height="40" src={event.away.badge}>
+          </article><%= event.away.name %> </td> 
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+
+

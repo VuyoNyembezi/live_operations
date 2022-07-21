@@ -1,0 +1,49 @@
+<div>
+  <h2><%= @title %></h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="event-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+  
+
+  <%= label f, :Home %>
+<%= select f, :home_id, Enum.map(@football_teams, &{&1.name, &1.id}) %> 
+<%= error_tag f, :home_id %>
+
+    <%= label f, :home_score %>
+     <div class="col-1">
+    <%= number_input f, :home_score %>
+    </div>
+    <%= error_tag f, :home_score %>
+
+  <%= label f, :Away %>
+<%= select f, :away_id, Enum.map(@football_teams, &{&1.name, &1.id}) %> 
+<%= error_tag f, :away_id %>
+
+    <%= label f, :away_score %>
+    <div class="col-1" >
+    <%= number_input f, :away_score %>
+    </div>
+    <%= error_tag f, :away_score %>
+  
+    <%= label f, :kickoff %>
+    <%= datetime_select f, :kickoff %>
+    <%= error_tag f, :kickoff %>
+  
+    <%= label f, :active %>
+    <%= checkbox f, :active %>
+    <%= error_tag f, :active %>
+  
+    <%= label f, :result %>
+    <%= checkbox f, :result %>
+    <%= error_tag f, :result %>
+  
+    <div>
+      <%= submit "Save", phx_disable_with: "Saving..." %>
+    </div>
+  </.form>
+</div>

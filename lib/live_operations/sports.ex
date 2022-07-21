@@ -32,11 +32,6 @@ defmodule LiveOperations.Sport do
 
   defp notify_subcribers({:error, reason}, _), do: {:error, reason}
 
-
-
-
-
-
   @doc """
   Returns the list of football.
 
@@ -101,6 +96,77 @@ defmodule LiveOperations.Sport do
   def update_football(%Football{} = football, attrs) do
     football
     |> Football.changeset(attrs)
+    |> Repo.update()
+    |> notify_subcribers([:football, :updated])
+  end
+
+    @doc """
+  won a football.
+
+  ## Examples
+
+      iex> win_match_football(football, %{field: new_value})
+      {:ok, %Football{}}
+
+      iex> win_match_football(football, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+
+
+  def win_match_football(%Football{} = football) do
+    attrs = %{
+      win: football.win + 1,
+      points: football.points + 3
+    }
+    football
+    |> Football.result_changeset(attrs)
+    |> Repo.update()
+    |> notify_subcribers([:football, :updated])
+  end
+
+    @doc """
+  Draw a match.
+
+  ## Examples
+
+      iex> drew_match_football(football, %{field: new_value})
+      {:ok, %Football{}}
+
+      iex> drew_match_football(football, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def drew_match_football(%Football{} = football) do
+        attrs = %{
+      draw: football.draw + 1,
+      points: football.points + 1
+    }
+    football
+    |> Football.result_changeset(attrs)
+    |> Repo.update()
+    |> notify_subcribers([:football, :updated])
+  end
+
+  
+    @doc """
+  Lossing match.
+
+  ## Examples
+
+      iex> loss_match_football(football, %{field: new_value})
+      {:ok, %Football{}}
+
+      iex> loss_match_football(football, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def loss_match_football(%Football{} = football) do
+    attrs = %{
+      loss: football.loss + 1
+    }
+    football
+    |> Football.result_changeset(attrs)
     |> Repo.update()
     |> notify_subcribers([:football, :updated])
   end
