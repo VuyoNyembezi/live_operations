@@ -53,6 +53,8 @@ defmodule LiveOperationsWeb.Router do
     live "/admin/fixture/resulted", EventLive.Resulted, :index
 
 live "/admin/fixture/live", EventLive.Active, :index
+
+live "/admin/fixture/upcoming", EventLive.Upcoming, :index
   end
 
   # Other scopes may use custom stacks.

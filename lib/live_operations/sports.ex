@@ -3,6 +3,11 @@ defmodule LiveOperations.Sport do
   The Sport context.
   """
 
+    @doc """
+ Result state values
+  """
+
+
   import Ecto.Query, warn: false
   alias LiveOperations.Repo
 
@@ -10,7 +15,10 @@ defmodule LiveOperations.Sport do
 
 
   @topic inspect(__MODULE__)
-
+  @played 1
+  @win_match 3
+  @drew_match 1
+  
   def subscribe do
     Phoenix.PubSub.subscribe(LiveOperations.PubSub, @topic)
   end
@@ -116,8 +124,8 @@ defmodule LiveOperations.Sport do
 
   def win_match_football(%Football{} = football) do
     attrs = %{
-      win: football.win + 1,
-      points: football.points + 3
+      win: football.win +  @played,
+      points: football.points + @win_match
     }
     football
     |> Football.result_changeset(attrs)
@@ -139,8 +147,8 @@ defmodule LiveOperations.Sport do
   """
   def drew_match_football(%Football{} = football) do
         attrs = %{
-      draw: football.draw + 1,
-      points: football.points + 1
+      draw: football.draw +  @played ,
+      points: football.points + @drew_match
     }
     football
     |> Football.result_changeset(attrs)
@@ -163,7 +171,7 @@ defmodule LiveOperations.Sport do
   """
   def loss_match_football(%Football{} = football) do
     attrs = %{
-      loss: football.loss + 1
+      loss: football.loss +  @played
     }
     football
     |> Football.result_changeset(attrs)
