@@ -42,7 +42,7 @@ alias LiveOperations.Sport
   """
 
   def list_fixtures do
-    query = from(r in Event, where: r.result == false)
+    query = from(r in Event)
     Repo.all(query)
     |> Repo.preload([:home,:away])
   end

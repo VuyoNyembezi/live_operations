@@ -6,10 +6,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
-       <li class="nav-item">
+        <li class="nav-item">
           <a class="nav-link active" aria-current="page" href={Routes.event_upcoming_path(@socket, :index)}>Upcoming Fixtures</a>
         </li>
-       
         <li class="nav-item">
           <a class="nav-link" href={Routes.event_active_path(@socket, :index)}>Active</a>
         </li>
@@ -24,7 +23,7 @@
   </div>
 </nav>
 
-<h1>Live Fixtures</h1>
+<h1> Fixtures</h1>
 
 <%= if @live_action in [:new, :edit] do %>
   <.modal return_to={Routes.event_active_path(@socket, :index)}>
@@ -47,14 +46,13 @@
        <th>Away score</th>
       <th>Away team </th>
       <th>Kickoff</th>
-      <th>Active</th>
-      <th>Result</th>
+     
 
       <th></th>
     </tr>
   </thead>
   <tbody id="fixtures">
-    <%= for event <- @active do %>
+    <%= for event <- @upcoming do %>
       <tr id={"event-#{event.id}"}>
         <td><article >
             <img alt="team badge" width="40" height="40" src={event.home.badge}>
@@ -66,13 +64,12 @@
             <img alt="team badge" width="40" height="40" src={event.away.badge}>
           </article><%= event.away.name %></td>
         <td><%= event.kickoff %></td>
-        <td><%= event.active %></td>
-        <td><%= event.result %></td>
+    
 
         <td>
           <span><%= live_redirect "Show", to: Routes.event_show_path(@socket, :show, event) %></span>
           <span><%= live_patch "Edit", to: Routes.event_index_path(@socket, :edit, event) %></span>
-             <span><%= live_patch "Result", to: Routes.event_index_path(@socket, :result, event) %></span>
+           
           <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: event.id, data: [confirm: "Are you sure?"] %></span>
         </td>
       </tr>
